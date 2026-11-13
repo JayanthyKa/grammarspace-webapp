@@ -49,3 +49,7 @@ src/
   pages/             one file per screen
   index.css          design tokens, colour themes, journey animation
 ```
+
+## License
+
+[MIT](LICENSE)
