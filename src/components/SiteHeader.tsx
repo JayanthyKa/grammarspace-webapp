@@ -1,4 +1,4 @@
-import { useProfile } from '../hooks/useProfile'
+import { useProfile, useStartHref } from '../hooks/useProfile'
 import { Avatar } from './Avatar'
 import { Button } from './Button'
 import { Icon } from './Icon'
@@ -10,13 +10,14 @@ interface SiteHeaderProps {
 }
 
 export function SiteHeader({ variant }: SiteHeaderProps) {
+  const startHref = useStartHref()
   return (
     <header className="flex items-center justify-between gap-4">
       <Logo compactOnMobile />
       <div className="flex items-center gap-2 sm:gap-6">
         <ThemePicker />
         {variant === 'home' ? (
-          <Button href="#/topics">Get started</Button>
+          <Button href={startHref}>Get started</Button>
         ) : (
           <>
             <a

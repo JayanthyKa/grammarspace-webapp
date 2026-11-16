@@ -6,10 +6,10 @@ Design: Figma file "Learning-website" (pages `design` and `implementation review
 
 ## Features
 
-- **Lessons** for four topics — Parts of speech, Tense, Punctuation and Sentence — each with six exercises and a stepping-disc journey path. The map pin hops forward only on a correct answer.
+- **Four units** — Parts of speech, Tense, Punctuation and Sentence — with three lessons each. Every lesson has six exercises and a stepping-disc journey path; the map pin hops forward only on a correct answer. Lessons and units unlock in order, and a lesson can be saved and resumed.
 - **Drag and drop** with Pointer Events (mouse, touch and pen), plus click/tap and keyboard placement.
 - **Library** of grammar rules with examples, **Practice** rounds with a streak counter, and **Achievements** with XP and badges.
-- **Profile** with a nickname and a choice of avatars.
+- **Guest sign-in and profile** with a nickname and a choice of avatars.
 - **Colour themes**: blue, purple and red.
 - Progress, profile and theme are saved in the browser (`localStorage`). There are no accounts and no server.
 - Responsive for desktop, tablet and mobile; respects `prefers-reduced-motion`.
@@ -45,7 +45,7 @@ src/
   components/lesson/ journey path, exercise card, word bank, sentence slot
   data/              lessons, practice questions, library rules, topics, avatars
   hooks/             hash routing, theme, progress, profile, drag-to-slot
-  lesson/            lesson state reducer
+  lesson/            lesson state reducer, lesson order and unlocking
   pages/             one file per screen
   index.css          design tokens, colour themes, journey animation
 ```

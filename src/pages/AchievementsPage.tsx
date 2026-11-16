@@ -182,7 +182,7 @@ export function AchievementsPage() {
       )}
 
       <p className="mt-7 text-sm text-muted">
-        Your progress is saved on this device only. {RULES.length} library rules, 4 lessons and 16
+        Your progress is saved on this device only. {RULES.length} library rules, 12 lessons and 16
         practice questions are available so far.
       </p>
     </AppShell>

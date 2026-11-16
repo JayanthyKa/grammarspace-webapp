@@ -7,6 +7,10 @@ interface PathItem {
   detail: string
 }
 
+/**
+ * The details of each unit together with its first lesson. The later lessons of a unit
+ * are in moreLessons.ts, and units.ts puts the two together.
+ */
 export interface Lesson {
   topic: TopicId
   /** Small label above the page heading, e.g. "Foundations · Unit 1". */
@@ -15,10 +19,9 @@ export interface Lesson {
   /** Name of the lesson, shown on the exercise card. */
   title: string
   tip: string
-  /** "Your path" panel: the unit name, the lesson already done and the two still locked. */
+  /** "Your path" panel: the unit name and the intro that is already done. */
   unit: string
   done: PathItem
-  upcoming: [PathItem, PathItem]
   /** Six exercises, one per disc on the journey path. */
   exercises: Exercise[]
 }
@@ -26,16 +29,12 @@ export interface Lesson {
 export const LESSONS: Record<TopicId, Lesson> = {
   sentence: {
     topic: 'sentence',
-    eyebrow: 'Foundations · Unit 1',
+    eyebrow: 'Foundations · Unit 4',
     heading: 'Building better sentences',
     title: 'Subject–verb agreement',
     tip: 'Singular subjects need singular verbs—even when extra words sit between them.',
-    unit: 'Unit 1',
+    unit: 'Unit 4',
     done: { title: 'Sentence basics', detail: 'Completed · +40 XP' },
-    upcoming: [
-      { title: 'Complete sentences', detail: '5 lessons' },
-      { title: 'Using punctuation', detail: '6 lessons' },
-    ],
     exercises: sentenceExercises,
   },
 
@@ -47,10 +46,6 @@ export const LESSONS: Record<TopicId, Lesson> = {
     tip: 'Ask what job the word does: naming, doing or describing.',
     unit: 'Unit 1',
     done: { title: 'What is a word class?', detail: 'Completed · +40 XP' },
-    upcoming: [
-      { title: 'Adverbs', detail: '4 lessons' },
-      { title: 'Pronouns', detail: '5 lessons' },
-    ],
     exercises: [
       {
         id: 'parts-red',
@@ -117,10 +112,6 @@ export const LESSONS: Record<TopicId, Lesson> = {
     tip: 'Look for time words like yesterday, now and tomorrow. They tell you which tense to use.',
     unit: 'Unit 2',
     done: { title: 'What is a verb?', detail: 'Completed · +40 XP' },
-    upcoming: [
-      { title: 'Tricky past verbs', detail: '5 lessons' },
-      { title: 'Talking about the future', detail: '4 lessons' },
-    ],
     exercises: [
       {
         id: 'tense-finished',
@@ -188,10 +179,6 @@ export const LESSONS: Record<TopicId, Lesson> = {
     tip: 'Read the sentence aloud. Does your voice ask, tell, shout or pause?',
     unit: 'Unit 3',
     done: { title: 'Capital letters', detail: 'Completed · +40 XP' },
-    upcoming: [
-      { title: 'Apostrophes', detail: '5 lessons' },
-      { title: 'Speech marks', detail: '6 lessons' },
-    ],
     exercises: [
       {
         id: 'punct-film',

@@ -24,7 +24,6 @@ export function ProfilePage() {
   const [name, setName] = useState(profile.name)
   const [avatar, setAvatar] = useState<AvatarId | null>(profile.avatar)
   const [error, setError] = useState<string | null>(null)
-  const [saved, setSaved] = useState(false)
 
   const trimmed = name.trim().replace(/\s+/g, ' ')
   const unchanged = trimmed === profile.name && avatar === profile.avatar
@@ -33,13 +32,10 @@ export function ProfilePage() {
     event.preventDefault()
     const problem = validateName(trimmed)
     setError(problem)
-    if (problem) {
-      setSaved(false)
-      return
-    }
+    if (problem) return
     saveProfile({ name: trimmed, avatar })
-    setName(trimmed)
-    setSaved(true)
+    // Saving the profile leads on to the topic menu.
+    window.location.hash = '#/topics'
   }
 
   return (
@@ -72,7 +68,6 @@ export function ProfilePage() {
               onChange={(event) => {
                 setName(event.target.value)
                 setError(null)
-                setSaved(false)
               }}
               className={`mt-3 block h-12 w-full max-w-sm rounded-lg border-2 bg-surface px-3.5 text-base font-semibold text-ink placeholder:font-normal placeholder:text-muted ${
                 error ? 'border-coral' : 'border-line-strong focus:border-primary-text'
@@ -113,7 +108,6 @@ export function ProfilePage() {
                       checked={selected}
                       onChange={() => {
                         setAvatar(option.id)
-                        setSaved(false)
                       }}
                       className="sr-only"
                     />
@@ -131,14 +125,12 @@ export function ProfilePage() {
           </fieldset>
 
           <div className="flex items-center justify-between gap-4 border-t border-line px-5 py-4 sm:px-7">
-            <p aria-live="polite" className="text-sm font-bold text-teal-text">
-              {saved && (
-                <span className="inline-flex items-center gap-1.5">
-                  <Icon name="check" size={16} strokeWidth={2.6} />
-                  Profile saved
-                </span>
-              )}
-            </p>
+            <a
+              href="#/topics"
+              className="inline-flex min-h-11 items-center rounded-lg px-2 text-[15px] font-semibold text-muted transition-colors hover:text-ink"
+            >
+              {profile.name ? 'Back to topics' : 'Skip for now'}
+            </a>
             <button
               type="submit"
               disabled={unchanged && !error}

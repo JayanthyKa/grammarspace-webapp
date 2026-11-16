@@ -4,8 +4,10 @@ import { Button } from '../components/Button'
 import { Icon } from '../components/Icon'
 import { SiteFooter } from '../components/SiteFooter'
 import { SiteHeader } from '../components/SiteHeader'
+import { useStartHref } from '../hooks/useProfile'
 
 export function HomePage() {
+  const startHref = useStartHref()
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[1346px] flex-col px-5 py-6 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
       <SiteHeader variant="home" />
@@ -29,7 +31,7 @@ export function HomePage() {
             Short, focused lessons that turn confusing grammar rules into skills you’ll use every
             day.
           </p>
-          <Button href="#/topics" className="mt-10">
+          <Button href={startHref} className="mt-10">
             Start Learning
           </Button>
         </div>

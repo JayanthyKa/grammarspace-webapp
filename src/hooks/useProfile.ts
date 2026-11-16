@@ -53,3 +53,8 @@ export function useProfile(): Profile {
     () => EMPTY,
   )
 }
+
+/** Where "Get started" leads: the sign-in page first, or the topic menu once a profile exists. */
+export function useStartHref(): string {
+  return useProfile().name ? '#/topics' : '#/signin'
+}

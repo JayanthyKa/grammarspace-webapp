@@ -37,13 +37,16 @@
   --gs-disc-base: #cfd3dc;
 }
 
-/* Colour themes from the Figma "Theme" component: blue (default), purple, red. */
+/* Colour themes from the Figma "Theme" component: blue (default), purple, red.
+   Each theme also tints the page background to match its accent. */
 [data-theme='purple'] {
   --gs-primary: #aa2aca;
   --gs-primary-hover: #9222ae;
   --gs-primary-text: #a226c1;
-  --gs-primary-tint: #f8ecfc;
-  --gs-slot: #faf0fd;
+  --gs-primary-tint: #f3e2f9;
+  --gs-slot: #f7ebfb;
+  --gs-page: #faf5fc;
+  --gs-sunken: #f8f2fa;
   --gs-slot-line: #d9a0ea;
 }
 
@@ -51,8 +54,10 @@
   --gs-primary: #a65348;
   --gs-primary-hover: #8d443b;
   --gs-primary-text: #9e4b41;
-  --gs-primary-tint: #fbeeec;
-  --gs-slot: #fcf2f0;
+  --gs-primary-tint: #f7e3df;
+  --gs-slot: #faece9;
+  --gs-page: #fcf6f4;
+  --gs-sunken: #faf3f1;
   --gs-slot-line: #dcaaa4;
 }
 

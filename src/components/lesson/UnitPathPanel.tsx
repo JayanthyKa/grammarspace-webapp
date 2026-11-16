@@ -1,17 +1,37 @@
-import type { Lesson } from '../../data/lessons'
+import { lessonHref } from '../../data/units'
+import type { Unit, UnitLesson } from '../../data/units'
 import { Icon } from '../Icon'
 
 interface UnitPathPanelProps {
-  lesson: Lesson
+  unit: Unit
+  /** The lesson that is open right now. */
+  lesson: UnitLesson
+  /** Steps answered correctly in the open lesson. */
   completed: number
   total: number
+  /** Ids of every finished lesson. */
+  completedLessons: string[]
 }
 
-/** "Your path" side panel: where this lesson sits inside its unit. */
-export function UnitPathPanel({ lesson, completed, total }: UnitPathPanelProps) {
-  const lessonDone = completed >= total
-  // One of four lessons is already finished; this lesson fills the second quarter.
-  const percent = Math.round(((1 + completed / total) / 4) * 100)
+const ROW = 'flex min-h-[60px] items-center gap-2.5 rounded-[9px] px-2 py-2.5'
+const BADGE = 'grid size-7 shrink-0 place-items-center rounded-lg text-xs font-extrabold'
+
+/** "Your path" side panel: the lessons of this unit and where the learner is in them. */
+export function UnitPathPanel({
+  unit,
+  lesson,
+  completed,
+  total,
+  completedLessons,
+}: UnitPathPanelProps) {
+  const isDone = (item: UnitLesson) => completedLessons.includes(item.id)
+  // The intro counts as one finished part; each lesson adds one more.
+  const parts = unit.lessons.reduce((sum, item) => {
+    const finished = isDone(item) ? 1 : 0
+    return sum + (item.id === lesson.id ? Math.max(finished, completed / total) : finished)
+  }, 1)
+  const percent = Math.round((parts / (unit.lessons.length + 1)) * 100)
+  const lessonsLeft = unit.lessons.filter((item) => !isDone(item)).length
 
   return (
     <aside
@@ -24,7 +44,7 @@ export function UnitPathPanel({ lesson, completed, total }: UnitPathPanelProps) 
             Your path
           </p>
           <h2 id="unit-title" className="font-display pt-0.5 text-lg font-semibold text-ink">
-            {lesson.unit}
+            {unit.name}
           </h2>
         </div>
         <span className="text-sm font-extrabold text-primary-text">{percent}%</span>
@@ -32,7 +52,7 @@ export function UnitPathPanel({ lesson, completed, total }: UnitPathPanelProps) 
 
       <div
         role="progressbar"
-        aria-label={`${lesson.unit} progress`}
+        aria-label={`${unit.name} progress`}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={percent}
@@ -45,54 +65,81 @@ export function UnitPathPanel({ lesson, completed, total }: UnitPathPanelProps) 
       </div>
 
       <ol className="mt-5 grid gap-1.5">
-        <li className="flex min-h-[60px] items-center gap-2.5 rounded-[9px] px-2 py-2.5">
-          <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-teal-deep text-white">
+        <li className={ROW}>
+          <span className={`${BADGE} bg-teal-deep text-white`}>
             <Icon name="check" size={17} strokeWidth={2.4} />
           </span>
           <span className="min-w-0 flex-1">
             <span className="block text-sm font-bold text-muted line-through">
-              {lesson.done.title}
+              {unit.intro.title}
             </span>
-            <span className="block pt-0.5 text-xs text-muted">{lesson.done.detail}</span>
+            <span className="block pt-0.5 text-xs text-muted">{unit.intro.detail}</span>
           </span>
         </li>
 
-        <li
-          aria-current="step"
-          className="flex min-h-[60px] items-center gap-2.5 rounded-[9px] bg-primary-tint px-2 py-2.5"
-        >
-          <span
-            className={`grid size-7 shrink-0 place-items-center rounded-lg text-xs font-extrabold text-white ${
-              lessonDone ? 'bg-teal-deep' : 'bg-primary'
-            }`}
-          >
-            {lessonDone ? <Icon name="check" size={17} strokeWidth={2.4} /> : 2}
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold text-primary-text">{lesson.title}</span>
-            <span className="block pt-0.5 text-xs text-muted">
-              {lessonDone ? 'Completed' : `In progress · ${completed} of ${total}`}
-            </span>
-          </span>
-          {!lessonDone && <Icon name="play" size={17} className="shrink-0 text-primary-text" />}
-        </li>
+        {unit.lessons.map((item, index) => {
+          const number = index + 2
+          const done = isDone(item)
+          const previous = unit.lessons[index - 1]
+          const open = index === 0 || isDone(previous)
 
-        {lesson.upcoming.map((item, index) => (
-          <li
-            key={item.title}
-            className="flex min-h-[60px] items-center gap-2.5 rounded-[9px] px-2 py-2.5"
-          >
-            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-off text-xs font-extrabold text-muted">
-              {index + 3}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm font-bold text-ink-soft">{item.title}</span>
-              <span className="block pt-0.5 text-xs text-muted">{item.detail}</span>
-            </span>
-            <Icon name="lock" size={16} className="shrink-0 text-muted" />
-            <span className="sr-only">Locked</span>
-          </li>
-        ))}
+          if (item.id === lesson.id) {
+            const finishedNow = done || completed >= total
+            return (
+              <li key={item.id} aria-current="step" className={`${ROW} bg-primary-tint`}>
+                <span
+                  className={`${BADGE} text-white ${finishedNow ? 'bg-teal-deep' : 'bg-primary'}`}
+                >
+                  {finishedNow ? <Icon name="check" size={17} strokeWidth={2.4} /> : number}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold text-primary-text">{item.title}</span>
+                  <span className="block pt-0.5 text-xs text-muted">
+                    {completed >= total ? 'Completed' : `In progress · ${completed} of ${total}`}
+                  </span>
+                </span>
+                {completed < total && (
+                  <Icon name="play" size={17} className="shrink-0 text-primary-text" />
+                )}
+              </li>
+            )
+          }
+
+          if (!open) {
+            return (
+              <li key={item.id} className={ROW}>
+                <span className={`${BADGE} bg-off text-muted`}>{number}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold text-ink-soft">{item.title}</span>
+                  <span className="block pt-0.5 text-xs text-muted">
+                    {item.exercises.length} questions
+                  </span>
+                </span>
+                <Icon name="lock" size={16} className="shrink-0 text-muted" />
+                <span className="sr-only">Locked</span>
+              </li>
+            )
+          }
+
+          return (
+            <li key={item.id}>
+              <a href={lessonHref(item)} className={`${ROW} transition-colors hover:bg-sunken`}>
+                <span
+                  className={`${BADGE} ${done ? 'bg-teal-deep text-white' : 'bg-off text-ink-soft'}`}
+                >
+                  {done ? <Icon name="check" size={17} strokeWidth={2.4} /> : number}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold text-ink-soft">{item.title}</span>
+                  <span className="block pt-0.5 text-xs text-muted">
+                    {done ? 'Completed' : `${item.exercises.length} questions`}
+                  </span>
+                </span>
+                <Icon name="arrowRight" size={16} className="shrink-0 text-muted" />
+              </a>
+            </li>
+          )
+        })}
       </ol>
 
       <div className="mt-5 flex items-center gap-2.5 rounded-[10px] bg-lav-tint p-3.5 text-lav-text">
@@ -103,7 +150,7 @@ export function UnitPathPanel({ lesson, completed, total }: UnitPathPanelProps) 
           </span>
           <span className="block text-sm font-bold">Grammar Explorer</span>
         </p>
-        <span className="text-xs">2 lessons</span>
+        <span className="text-xs">{lessonsLeft === 1 ? '1 lesson' : `${lessonsLeft} lessons`}</span>
       </div>
     </aside>
   )
