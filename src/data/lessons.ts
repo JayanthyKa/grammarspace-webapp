@@ -19,9 +19,9 @@ export interface Lesson {
   /** Name of the lesson, shown on the exercise card. */
   title: string
   tip: string
-  /** "Your path" panel: the unit name and the intro that is already done. */
+  /** "Your path" panel: the unit name, and the intro shown as already done (if any). */
   unit: string
-  done: PathItem
+  done?: PathItem
   /** Six exercises, one per disc on the journey path. */
   exercises: Exercise[]
 }
@@ -45,7 +45,6 @@ export const LESSONS: Record<TopicId, Lesson> = {
     title: 'Nouns, verbs and adjectives',
     tip: 'Ask what job the word does: naming, doing or describing.',
     unit: 'Unit 1',
-    done: { title: 'What is a word class?', detail: 'Completed · +40 XP' },
     exercises: [
       {
         id: 'parts-red',

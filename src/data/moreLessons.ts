@@ -8,7 +8,73 @@ export interface LessonContent {
   exercises: Exercise[]
 }
 
-/** The second and third lesson of every unit. The first lessons live in lessons.ts. */
+/** Lessons that open a unit, before the lesson in lessons.ts. */
+export const OPENING_LESSONS: Partial<Record<TopicId, LessonContent>> = {
+  parts: {
+    title: 'What is a word class?',
+    tip: 'Every word has a job. Naming words are nouns, doing words are verbs and describing words are adjectives.',
+    exercises: [
+      {
+        id: 'class-noun',
+        before: 'A word that names a person, place or thing is a',
+        after: '.',
+        options: ['verb', 'noun', 'sentence'],
+        answer: 'noun',
+        explanation: 'Naming words are called nouns: “teacher,” “school” and “ball” are all nouns.',
+        hint: 'Think of words like “teacher,” “park” and “ball.” What do we call naming words?',
+      },
+      {
+        id: 'class-verb',
+        before: 'A word that shows an action, like “run” or “eat,” is a',
+        after: '.',
+        options: ['noun', 'sentence', 'verb'],
+        answer: 'verb',
+        explanation: 'Doing words are called verbs: “run,” “eat” and “sing” are all verbs.',
+        hint: 'Action words tell you what someone does. What are they called?',
+      },
+      {
+        id: 'class-adjective',
+        before: 'A word that describes a noun, like “big” or “red,” is an',
+        after: '.',
+        options: ['adjective', 'action', 'article'],
+        answer: 'adjective',
+        explanation:
+          'Describing words are called adjectives: “big,” “red” and “happy” are all adjectives.',
+        hint: 'Words like “big” and “red” tell you what something is like. What are they called?',
+      },
+      {
+        id: 'class-dog',
+        before: 'In “The dog barked,” the word “dog” is a',
+        after: 'word.',
+        options: ['naming', 'doing', 'describing'],
+        answer: 'naming',
+        explanation: '“Dog” names an animal, so it is a naming word: a noun.',
+        hint: 'Does “dog” name something, show an action or describe something?',
+      },
+      {
+        id: 'class-jumped',
+        before: 'In “Sam jumped high,” the word “jumped” is a',
+        after: 'word.',
+        options: ['describing', 'naming', 'doing'],
+        answer: 'doing',
+        explanation: '“Jumped” is what Sam did, so it is a doing word: a verb.',
+        hint: 'What did Sam do? That word shows an action.',
+      },
+      {
+        id: 'class-shiny',
+        before: 'In “a shiny coin,” the word “shiny” is a',
+        after: 'word.',
+        options: ['doing', 'describing', 'naming'],
+        answer: 'describing',
+        explanation:
+          '“Shiny” tells you what the coin is like, so it is a describing word: an adjective.',
+        hint: 'Does “shiny” tell you what the coin is like?',
+      },
+    ],
+  },
+}
+
+/** The lessons that follow each unit's first lesson. The first lessons live in lessons.ts. */
 export const MORE_LESSONS: Record<TopicId, [LessonContent, LessonContent]> = {
   parts: [
     {

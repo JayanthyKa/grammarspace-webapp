@@ -47,7 +47,7 @@ export function LessonPage({ unit, lesson }: { unit: Unit; lesson: UnitLesson })
       ? {
           href: lessonHref(following),
           label: 'Next unit',
-          note: `You finished ${unit.name} and unlocked the next unit: ${topicById(following.topic).title}.`,
+          note: `You finished ${unit.name}. Next up is the ${topicById(following.topic).title} unit.`,
         }
       : {
           href: lessonHref(following),

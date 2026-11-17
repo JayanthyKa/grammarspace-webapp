@@ -4,16 +4,11 @@ import { Icon } from '../components/Icon'
 import type { IconName } from '../components/Icon'
 import { SiteFooter } from '../components/SiteFooter'
 import { SiteHeader } from '../components/SiteHeader'
-import { TOPICS, topicById } from '../data/topics'
+import { TOPICS } from '../data/topics'
 import type { Topic } from '../data/topics'
 import { UNITS, lessonHref } from '../data/units'
 import { useProgress } from '../hooks/useProgress'
-import {
-  currentLessonInUnit,
-  isUnitComplete,
-  isUnitUnlocked,
-  previousTopic,
-} from '../lesson/lessonOrder'
+import { currentLessonInUnit, isUnitComplete } from '../lesson/lessonOrder'
 
 const CARD = 'flex h-full flex-col gap-7 rounded-2xl border border-transparent px-7 py-6 sm:px-10'
 
@@ -29,20 +24,6 @@ export function TopicsPage() {
         <div className="relative mx-auto max-w-[1210px]">
           <ol className="grid gap-6 rounded-2xl bg-surface p-5 shadow-card sm:grid-cols-2 sm:gap-x-10 sm:gap-y-10 sm:p-8 lg:gap-x-24 lg:p-12 xl:gap-x-44">
             {TOPICS.map((topic) => {
-              const previous = previousTopic(topic.id)
-              if (!isUnitUnlocked(topic.id, completedLessons)) {
-                return (
-                  <li key={topic.id}>
-                    <div aria-disabled="true" className={`${CARD} ${topic.cardClass} opacity-60`}>
-                      <CardText topic={topic} />
-                      <Status icon="lock">
-                        Locked. Finish “{previous ? topicById(previous).title : ''}” first.
-                      </Status>
-                    </div>
-                  </li>
-                )
-              }
-
               const { lessons } = UNITS[topic.id]
               const current = currentLessonInUnit(topic.id, completedLessons)
               const finished = lessons.filter((lesson) => completedLessons.includes(lesson.id))

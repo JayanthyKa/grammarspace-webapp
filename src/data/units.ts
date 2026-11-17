@@ -1,6 +1,6 @@
 import type { Exercise } from './exercises'
 import { LESSONS } from './lessons'
-import { MORE_LESSONS } from './moreLessons'
+import { MORE_LESSONS, OPENING_LESSONS } from './moreLessons'
 import { TOPICS } from './topics'
 import type { TopicId } from './topics'
 
@@ -16,7 +16,10 @@ export interface UnitLesson {
   exercises: Exercise[]
 }
 
-/** A topic card is a unit: a short intro (already done) followed by its lessons, in order. */
+/**
+ * A topic card is a unit: its lessons in order, sometimes after a short intro that is
+ * shown as already done.
+ */
 export interface Unit {
   topic: TopicId
   /** Small label above the page heading, e.g. "Word classes · Unit 1". */
@@ -24,19 +27,21 @@ export interface Unit {
   heading: string
   /** Short name such as "Unit 1". */
   name: string
-  intro: { title: string; detail: string }
+  intro: { title: string; detail: string } | null
   lessons: UnitLesson[]
 }
 
 function buildUnit(topic: TopicId): Unit {
   const first = LESSONS[topic]
-  const contents = [first, ...MORE_LESSONS[topic]]
+  const opening = OPENING_LESSONS[topic]
+  const contents = [...(opening ? [opening] : []), first, ...MORE_LESSONS[topic]]
   return {
     topic,
     eyebrow: first.eyebrow,
     heading: first.heading,
     name: first.unit,
-    intro: first.done,
+    // A unit that opens with a real lesson has no ready-made intro.
+    intro: opening ? null : (first.done ?? null),
     lessons: contents.map((content, index) => ({
       id: `${topic}/${index + 1}`,
       topic,

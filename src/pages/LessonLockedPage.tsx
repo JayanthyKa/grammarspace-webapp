@@ -4,12 +4,12 @@ import { Icon } from '../components/Icon'
 import { lessonHref } from '../data/units'
 import type { Unit, UnitLesson } from '../data/units'
 import { useProgress } from '../hooks/useProgress'
-import { firstOpenLesson } from '../lesson/lessonOrder'
+import { currentLessonInUnit } from '../lesson/lessonOrder'
 
 /** Shown when a lesson is opened by address before the lessons in front of it are finished. */
 export function LessonLockedPage({ unit, lesson }: { unit: Unit; lesson: UnitLesson }) {
   const { completedLessons } = useProgress()
-  const current = firstOpenLesson(completedLessons)
+  const current = currentLessonInUnit(lesson.topic, completedLessons)
 
   return (
     <AppShell current="lesson" eyebrow={unit.eyebrow} title={unit.heading}>
@@ -24,7 +24,8 @@ export function LessonLockedPage({ unit, lesson }: { unit: Unit; lesson: UnitLes
           This lesson is still locked
         </h2>
         <p className="mx-auto mt-3 max-w-sm text-base leading-relaxed text-ink-soft">
-          Lessons open one after another. Finish “{current.title}” to get closer to “{lesson.title}
+          Lessons in {unit.name} open one after another. Finish “{current.title}” to get closer to “
+          {lesson.title}
           ”.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

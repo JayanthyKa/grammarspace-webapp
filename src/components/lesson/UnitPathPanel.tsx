@@ -25,12 +25,13 @@ export function UnitPathPanel({
   completedLessons,
 }: UnitPathPanelProps) {
   const isDone = (item: UnitLesson) => completedLessons.includes(item.id)
-  // The intro counts as one finished part; each lesson adds one more.
+  // The intro (if any) counts as one finished part; each lesson adds one more.
+  const introParts = unit.intro ? 1 : 0
   const parts = unit.lessons.reduce((sum, item) => {
     const finished = isDone(item) ? 1 : 0
     return sum + (item.id === lesson.id ? Math.max(finished, completed / total) : finished)
-  }, 1)
-  const percent = Math.round((parts / (unit.lessons.length + 1)) * 100)
+  }, introParts)
+  const percent = Math.round((parts / (unit.lessons.length + introParts)) * 100)
   const lessonsLeft = unit.lessons.filter((item) => !isDone(item)).length
 
   return (
@@ -65,20 +66,22 @@ export function UnitPathPanel({
       </div>
 
       <ol className="mt-5 grid gap-1.5">
-        <li className={ROW}>
-          <span className={`${BADGE} bg-teal-deep text-white`}>
-            <Icon name="check" size={17} strokeWidth={2.4} />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold text-muted line-through">
-              {unit.intro.title}
+        {unit.intro && (
+          <li className={ROW}>
+            <span className={`${BADGE} bg-teal-deep text-white`}>
+              <Icon name="check" size={17} strokeWidth={2.4} />
             </span>
-            <span className="block pt-0.5 text-xs text-muted">{unit.intro.detail}</span>
-          </span>
-        </li>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-bold text-muted line-through">
+                {unit.intro.title}
+              </span>
+              <span className="block pt-0.5 text-xs text-muted">{unit.intro.detail}</span>
+            </span>
+          </li>
+        )}
 
         {unit.lessons.map((item, index) => {
-          const number = index + 2
+          const number = index + 1 + introParts
           const done = isDone(item)
           const previous = unit.lessons[index - 1]
           const open = index === 0 || isDone(previous)

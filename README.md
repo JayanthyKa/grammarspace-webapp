@@ -6,7 +6,7 @@ Design: Figma file "Learning-website" (pages `design` and `implementation review
 
 ## Features
 
-- **Four units** — Parts of speech, Tense, Punctuation and Sentence — with three lessons each. Every lesson has six exercises and a stepping-disc journey path; the map pin hops forward only on a correct answer. Lessons and units unlock in order, and a lesson can be saved and resumed.
+- **Four units** — Parts of speech, Tense, Punctuation and Sentence — with three or four lessons each. Every lesson has six exercises and a stepping-disc journey path; the map pin hops forward only on a correct answer. Lessons inside a unit unlock in order, and a lesson can be saved and resumed.
 - **Drag and drop** with Pointer Events (mouse, touch and pen), plus click/tap and keyboard placement.
 - **Library** of grammar rules with examples, **Practice** rounds with a streak counter, and **Achievements** with XP and badges.
 - **Guest sign-in and profile** with a nickname and a choice of avatars.
